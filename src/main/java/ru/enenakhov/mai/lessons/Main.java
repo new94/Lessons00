@@ -9,11 +9,14 @@ import ru.enenakhov.mai.lessons.lesson01.Dog;
 import java.util.ArrayList;
 import java.util.List;
 
+//https://github.com/new94/Lessons00
+
 public class Main {
 
     public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
+
         Cat cat = Cat.build("CatName", 10.0, 2);
 
         logger.info(cat);

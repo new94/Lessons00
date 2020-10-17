@@ -17,6 +17,11 @@ public class CollectionsExample {
     }
 
     public void example02() {
+        //1. InsertSort
+        //2. MergeSort
+        //3. MergeSort
+        //4. QuickSort
+        //5. TimSort
         printCollection(Arrays.asList(1, 2, 3, 4, 5));
     }
 
@@ -25,9 +30,10 @@ public class CollectionsExample {
     }
 
     public void example04() {
-        HashMap<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("1", "1.1");
         map.put("2", "2.2");
+        map.put("3", "2.3");
         for (Map.Entry<String, String> entry : map.entrySet()) {
             logger.info("Entry: " + entry.getKey() + " => " + entry.getValue());
         }
@@ -63,4 +69,5 @@ public class CollectionsExample {
         CollectionsExample example = new CollectionsExample();
         example.example04();
     }
+
 }
