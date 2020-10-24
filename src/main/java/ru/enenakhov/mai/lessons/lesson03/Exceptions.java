@@ -1,4 +1,4 @@
-package ru.enenakhov.mai.lessons.lessons03;
+package ru.enenakhov.mai.lessons.lesson03;
 
 import org.apache.log4j.Logger;
 
@@ -9,8 +9,8 @@ public class Exceptions {
     public static void main(String[] args) {
         String a = null;
         try {
-            a.hashCode();
-        } catch (Exception ex) {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
             logger.error("CATCH EXCEPTION", ex);
         } catch (Throwable ex) {
             logger.warn("CATCH WARNING");
