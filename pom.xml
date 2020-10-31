@@ -26,6 +26,15 @@
             <version>2.8.6</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+        <!-- https://www.vojtechruzicka.com/javafx-fxml-scene-builder/-->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx</artifactId>
+            <version>15</version>
+            <type>pom</type>
+        </dependency>
+
     </dependencies>
 
 
