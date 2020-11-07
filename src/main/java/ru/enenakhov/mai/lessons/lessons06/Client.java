@@ -9,42 +9,66 @@ import java.util.Scanner;
 
 
 public class Client {
-    public static final Logger logger = Logger.getLogger(Client.class.getName());
 
-    private String name;
+    private static final Logger logger = Logger.getLogger(Client.class.getName());
 
-    public Client(String name) {
+    private String host = "localhost";
+    private Integer port = 8843;
+    private String name = "Bot";
+
+    public Client() {
+    }
+
+    public Client(String host, Integer port, String name) {
+        this.host = host;
+        this.port = port;
         this.name = name;
     }
 
     public void start() {
         try {
-            Socket server = new Socket("localhost", 8843);
+            logger.info("Клиент инициализирован");
+            Socket server = new Socket(host, port);
             PrintWriter outputStream = new PrintWriter(server.getOutputStream());
-            outputStream.println("Привет! Меня зовут ###" + name);
+            outputStream.println("Привет! Я новый клиент! ###" + name);
             outputStream.flush();
-            Scanner inputStream = new Scanner(server.getInputStream());
 
             new Thread(() -> {
-                while (inputStream.hasNext()) {
-                    logger.info(inputStream.nextLine());
+                Scanner inputStream = null;
+                try {
+                    inputStream = new Scanner(server.getInputStream());
+
+                    while (inputStream.hasNext()) {
+                        String text = inputStream.nextLine();
+                        System.out.println(text);
+                    }
+                } catch (IOException e) {
+                    logger.error("Проблема при чтении сервера клиентом", e);
+                } finally {
+                    if (inputStream != null) inputStream.close();
+                    try {
+                        server.close();
+                    } catch (IOException ex) {
+                        logger.error("Проблема при закрытии соединения с сервером", ex);
+                    }
                 }
             }).start();
 
-            Scanner scanner = new Scanner(System.in);
-            while (true) {
-                if (scanner.hasNext()) {
-                    String text = scanner.nextLine();
-                    outputStream.println(text);
-                    outputStream.flush();
-                }
+            Scanner inputMessage = new Scanner(System.in);
+            while (inputMessage.hasNext()) {
+                outputStream.println(inputMessage.nextLine());
+                outputStream.flush();
             }
+//            Scanner inputStream = new Scanner(server.getInputStream());
+//            while (inputStream.hasNext()) {
+//                String text = inputStream.nextLine();
+//                logger.info(text);
+//            }
+//            inputStream.close();
+            outputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Ошибка при подключении к серверу", e);
         }
-    }
 
-    public String getName() {
-        return name;
     }
 }

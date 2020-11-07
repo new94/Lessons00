@@ -9,12 +9,13 @@ import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
 
-    public static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+
+    private static final String ANCHOR_NAME = "###";
 
     private Socket client;
     private Server server;
     private String name;
-    private String address;
 
     public ClientHandler(Socket client, Server server) {
         this.client = client;
@@ -27,42 +28,49 @@ public class ClientHandler implements Runnable {
         try {
             inputStream = new Scanner(client.getInputStream());
 
-//            PrintWriter outputStream = new PrintWriter(client.getOutputStream());
             while (inputStream.hasNext()) {
                 String text = inputStream.nextLine();
-                if (text.contains("###")) {
-                    name = text.substring(text.indexOf("###") + 3);
-                    address = client.toString();
+                logger.info("Сообщение от клиента: " + text);
+                if (text.contains(ANCHOR_NAME)) {
+                    name = text.substring(text.indexOf(ANCHOR_NAME) + ANCHOR_NAME.length());
+                } else {
+                    server.sendMessageToChat(text, name);
                 }
-                logger.info(text);
-//                outputStream.println("Answer " + text);
+//                PrintWriter outputStream = new PrintWriter(client.getOutputStream());
+//                outputStream.println("Эхо: " + text);
 //                outputStream.flush();
-                server.sendMessageToChat(text, name);
+//                outputStream.close();
+
             }
         } catch (IOException e) {
-            logger.error("Проблема с обработкой сообщений клиента", e);
+            logger.error("Ошибка при работе с клиентом", e);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+
+            if (client != null) {
+                try {
+                    client.close();
+                } catch (IOException ex) {
+                    logger.error("Ошибка при закрытии клиента!", ex);
+                }
+            }
         }
     }
 
-    public void sendMessage(String text) {
+    public void sendMessage(String message) {
+        PrintWriter outputStream = null;
         try {
-            PrintWriter outputStream = new PrintWriter(client.getOutputStream());
-            outputStream.println(text);
+            outputStream = new PrintWriter(client.getOutputStream());
+            outputStream.println(message);
             outputStream.flush();
         } catch (IOException e) {
-            logger.error("Ошибка при отправке сообщения в чат!", e);
+            logger.error("Проблема при записи сообщения в поток клиента: " + client.toString(), e);
         }
-    }
-
-    public Socket getClient() {
-        return client;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getAddress() {
-        return address;
     }
 }

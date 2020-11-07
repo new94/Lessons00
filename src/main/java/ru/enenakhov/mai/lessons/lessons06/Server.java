@@ -12,29 +12,58 @@ public class Server {
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
+    private String host = "localhost"; //127.0.0.1
+    private Integer port = 8843;
+
     private List<ClientHandler> clients = new ArrayList<>();
 
+    public Server() {
+    }
+
+    public Server(String host, Integer port) {
+        this.host = host;
+        this.port = port;
+    }
+
     public void start() {
+        logger.info("Инициализация сервера");
+        ServerSocket serverSocket = null;
         try {
-            ServerSocket server = new ServerSocket(8843);
-            logger.info("Сервер стартовал и ждет клиентов!");
+            serverSocket = new ServerSocket(port);
+            logger.info("Сервер стартовал и ожидает подключение клиента");
             while (true) {
-                Socket client = server.accept();
-                logger.info("Новый клиент " + client.toString());
+                Socket client = serverSocket.accept();
+                logger.info("Подключился новый клиент: " + client.toString());
+//                Scanner inputStream = new Scanner(client.getInputStream());
+//                while (inputStream.hasNext()) {
+//                    String text = inputStream.nextLine();
+//                    logger.info("Сообщение от клиента: " + text);
+//                    PrintWriter outputStream = new PrintWriter(client.getOutputStream());
+//                    outputStream.println("Эхо: " + text);
+//                    outputStream.flush();
+//                    outputStream.close();
+//                }
+//                inputStream.close();
                 ClientHandler clientHandler = new ClientHandler(client, this);
                 clients.add(clientHandler);
                 new Thread(clientHandler).start();
             }
         } catch (IOException e) {
-            logger.error("Ошибка на сервере", e);
+            logger.error("Проблема с сервером", e);
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException ex) {
+                    logger.error("Проблема при закрытии сервера", ex);
+                }
+            }
         }
     }
 
     public void sendMessageToChat(String message, String name) {
         for (ClientHandler client : clients) {
-            logger.info("Отправка сообщения клиенту " + client.getName());
             client.sendMessage(name + ": " + message);
         }
     }
-
 }
