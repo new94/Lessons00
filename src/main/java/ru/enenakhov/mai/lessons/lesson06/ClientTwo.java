@@ -1,4 +1,4 @@
-package ru.enenakhov.mai.lessons.lessons06;
+package ru.enenakhov.mai.lessons.lesson06;
 
 public class ClientTwo {
     public static void main(String[] args) {
