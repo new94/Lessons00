@@ -3,7 +3,6 @@ package ru.enenakhov.mai.lessons.lesson01;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 class CatTest {
 
     @Test
