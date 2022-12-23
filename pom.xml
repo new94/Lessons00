@@ -11,6 +11,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <sonar.organization>new94</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
@@ -26,14 +28,24 @@
             <version>2.8.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
-        <!-- https://www.vojtechruzicka.com/javafx-fxml-scene-builder/-->
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx</artifactId>
-            <version>15</version>
-            <type>pom</type>
+            <artifactId>javafx-controls</artifactId>
+            <version>19</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>19</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>19</version>
+        </dependency>
+
 
     </dependencies>
 
