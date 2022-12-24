@@ -41,7 +41,6 @@ public class Server {
 //                    PrintWriter outputStream = new PrintWriter(client.getOutputStream());
 //                    outputStream.println("Эхо: " + text);
 //                    outputStream.flush();
-//                    outputStream.close();
 //                }
 //                inputStream.close();
                 ClientHandler clientHandler = new ClientHandler(client, this);
