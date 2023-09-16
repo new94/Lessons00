@@ -4,5 +4,6 @@ public abstract class Animal {
     public void say() {
         System.out.println("Hello, I'm Animal!");
         System.out.println("MyChanges");
+        System.out.println("Another Changes");
     }
 }
